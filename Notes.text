@@ -1,3 +1,7 @@
+
+========================  Playwright By SANJAY BHATT  [ 30 AUGUST 2025 ] =======================================
+
+
 # playwright
 Playwright kisi bhi element m action performa krne se phle automatically wait krta h jb tk element load na ho jaye.
 Auto wait k liye hme config file m globally wait define krna hot H  fir playwright automatically SAB element k liye utne hi time tk wait krt H.
@@ -88,4 +92,165 @@ test('Browser Fixture test', async ({browser})=> {
 => Agr apka element 30 second se jada time le ra h to apko timeout setting ko override krna hoga.
     : playwright.config.json file m timeouts:40*1000 ese krna hoga.
 
-=> 
+=> Same agr Assertion m jada time lg ra h to aap expect : {timeout:40*1000} ye likh skte h config file m.
+=> Brower k liye  [ use {browserName:'chromium'},]  esa likhna hota h config file m .
+
+=> PlaywrightBy default tst ko headless mode m run krta h .
+=> Agr apko project headless mode m run ni krna h to config file m use k ander headless:false kr do
+=> npx playwright test  : is command se hm test ko run kr skte h : ye command aapki test folder k ander jitne file h sab ko run kregi. 
+  : agr apne script m test annotation k sath .only likha h to only vo  hi test run hoga. 
+  : or aap command k sath file name pass krte ho to vo hi file run gohi. 
+EXAMPLE : 
+     npx playwright test tests/PlaceOrder.spec.js
+      npx playwright test 
+
+=> agr mere file m 3 case h mj 1 hi run krna h to m us  case m .only lihk dunga test.only('', =>{ });ese
+=> Playwright m assertion k liye hm expect ka ue krte h ise expect ko import bhi krna hota h top m .
+    :expect(page).toHaveTitle("google");  mtlb page ka title google hona chahiye. is m assertion lga h.
+=> page.selector("cssSelectorlocator"); is trah hm locators likhte h .  : playwright cssSelectorlocator ko prefer krta h.
+
+=> hm xpath bhi likh skte h but playwright css ko hi suggest krta h so cssSelectorlocator hi use kre.
+=>Input box m value fill krne k liye .fill("") or .type("") method hote h .
+    : but latest version m .type("")  ko remove kr k .fill(); ka use hua h. type method removed.
+=>  playwright m test get krne k liye .textContent();  method ka use krte h .
+=>Agr kisi inputbox m koi default value h or aap .fill(""); use kr re ho to default value remove kr k new value enter krega
+=> Agr apne kisi element k liye locator likha or vo locator unique ni h mtlb us locator se multiple element select hore h to apka test fail ho 
+    : jayega or "Strict mode violation"  ye error aayegi.
+
+=> Playwright m locators k sath indexing k liye hm .nth(0) ya .first(),  .last()  in methods ka use krte h.
+
+=> Agr hmare pas multiple elements h or hme sab ka text nikalna h to hm element.allTextContent()  is method ka se kr skte h .
+    : But agr aap allTextContent() method ka use kr re ho to apko is k liye alag se wait lgana hoga .waitFor() ka use kr k.
+    : kyu ki playwright bydefault is method k liye wait ni krta h .
+=> waitForLoadState("networkidel")  iska mtlb h jb tk sare api calls run ni hota h ui m element show hone k liye tb tk wait kro.
+    [ jese pko product ki list m se sab ka name get krna h to aap is wait ka use kr skte ho. kyu ki product API locad hone m time lgta h ]
+
+=> Agr waitForLoadState("networkidel") ye kaam ni kr ra h to aap list ka locator nikalo fir listElement.firt().waitFor() ye kr lo.
+    : mtlb jb tk list m se 1st product locad ni ho jat tb tk wait kro.
+    : waitFor() only single elemet k liye kaam krta h is liye hm list.first().waitFor() likh re h. .fisrt() mtlb 1 element 1st vala.
+
+1. WHAT IS PRIMARY OUROSE IF TEST FUNCTION IN PLAYWRIGHT ?
+ANSWER: RUN A TEST CASE.
+
+=======================  SELECT AND RADIO BUTTON ==============================
+
+=> Static dropdown ko select krne k liye :
+    : element.selectOption("value of value attribute");
+
+=> pge.pouse is ka use kr k page pouse ho jayega.
+=> radio button ko select krne k liye locator nikal k click kr do bs.
+=> agr apko check krna h ki radio button select hua h ya ni to .tobeChecked(); is method ka use kro.
+=> ya isChecked(); is method ka use kro ye apko return m true ya false dega.
+=> Checkbox ko uncheck krne k liye aap .uncheck();  is method ka use kro.
+=> agr apko false k liye ya true k liye assertion lga h like assert.assertTrue("true") is trh ka to aap 
+    : expect(await condition).toBeTruthy() ya toBefalsy(); is method ka use kr skte h .
+
+=> code m aap dekho await khi pr expect k ander or kha khi pr bhar lgta h kyu ki :
+    : Agr action expect k ander perform ho ra h to await bhi ander hi hoga. 143 line m conditoion expect k ander h tb await bhi ander h .
+
+    example: 
+        expect (await page.locator("#id").isChecked()); yha p isChecked expect k ander h to await bhi ander h 
+        await expect(page.locator(".radiobtn").last()).isChecked(); yha p isChecked expect k bhar h to await bhi bhar h .
+
+=> Element k attribute ki value check krne k liye hm .toHaveAttribute("attributename",attributeValue"); is ka use krte h .
+
+
+========================= *******  MULTIPLE WINDOW/PAGE HANDLE  **********==============================
+
+=> agr apko 1 page se dusre page m jana h to aap context.waitForEvent('page'); is ka use kr skte h .page is liye likha kyu ni new tab open horah
+
+EXAMPLE : 
+    sabse phe test k sath {browser} fixture ka use kre. fir
+    const context = browser.newContext();
+    const page = context.newPage();
+    const page2 = context.waitForEvent('page'); ab page2 ka use kr k dusre tab m aap kuchh bhi action perform kr skte h. 
+
+=> javascript m 3 promiss hote h 
+    1. pending
+    2. rejected.
+    3. fuilfil.
+
+**  Interview Question ?
+1. Agr apko test case Asyncronously run krna h to aap kya kroge ?
+   Agr multiple test case ki apas m dependancy h mtlb sab 1 sath run krne h to kese kroge?
+   Promiss kya hota h ?
+
+ANSWER: 
+    
+    Agr testcase ko Asyncronously run krna h to hm sare test case jinko Asyncronously run krna h unko 1 promiss k ander dal denge.
+    promiss k ander dale hue sarre test jb tb run ni ho jate successfully tb tk script next step ko run ni kregi.
+    jb tk sab test case ki state fuilfil ni ho jati tb tk script next step ko run ni kregi.
+    Promiss k ander sare case as a array pass hote h .
+
+EXAMPLE : 
+    const [newPage] = Promiss.all([
+        context.waitForEvent('page'),  // lition for new page
+        Element.click()                // click on link for opening new page.
+    ]);
+
+
+    : phle newPage vala code is liye likha h kyu ki jb code run hoga phle new page ki state pending hogi.
+    : fir ye click vala code run hoga. kyu ki promiss k ander jitna code h agr 1 ki state pending h to vo next code run krta h.
+    : or tb tk promiss k ander looping krta rhega jb tk sab ki state fuilfil ni ho jate.
+    : to click vala code run hote h new page open hoga or click vale ki state fuilfil ho jayegi fir ye again newpge vala code run krega kyu ki 
+    : phle new page ki state penfing thi . ab is bar new page ki state fuilfil ho jayegi kyu ab new page open ho gya.
+    : const [newPage] ye is liye likha h waitForEvent('page') ye 1 obj return krega. os us obj ka name [newPage] liya h hmne.
+
+=> agr apne kisi input box m koi value fill krni h or aap use get krna chahte h to [ element.inputValue();]  is method ka use kre.
+    : textContent(); ye method usi test ko get krega jo dom m phle se h mtlb default value ko .
+
+
+============================ ***********  PLAYWRIGHT INSPPECTOR *************** ========================
+
+=> Playwright INSPPECTOR code debuging k kaam aata h .
+    : agr aap npx playwright test --debug ye command likh doge to apka code debuging mode m run hoga. playwright INSPPECTOR open ho jayega.
+
+=> Playwright INSPPECTOR se hm locators bhi generate kr skte h . INSPPECTOR m 1 explore ka option hota h us m click kr k element m click kro.
+    : INSPPECTOR apke liye us element ka locator nikal k dedega.
+
+
+============================= ************ PLAYWRIGHT CODE GENERATOR *********** ========================
+
+=> Playwright m  hm code bhi generate kr skte h us k liye codeGen ka use  hota h .
+
+1. npx playwright codegen http://google.com    // mtlb apni site ka url likho.
+    ; is se apki website or side m codegen open ho jayega.
+2. ab ap apni site m jo jo action perform kroge us k liye apko codegen m code automatic dikhta rhega.
+3. complete code ko copy kr k apni file m past kr do. or un kro.
+
+
+
+================== ******************  PLAYWRIGHT SCREENSHOTS ***********==============================
+
+=> AGR APKO APNE test case ka screenshot lena h to aap config file m use k ander screenshot:'on' kr do.
+=> agr apko detailed log / trace chahiye to use k ander hi trace:'on'  ye likh do.
+=> Agr apko failed test case ka hi trace chahiye mtlb log to aap trace : "retain-on-failure"  ye likho.
+=> gr only on likhoge to ye pass or fail donu ka log dega.
+
+=> playwright_report  is folder k ander apke pas 1 index.html file hogi aap use open kr k report dekh skte h .
+=> aap report m se trace ko download bhi kr skte h . ye 1 ip folder download krega.
+=> fir aap use zip file ko trace.playwright.dev  is website k upload kro to aap complete logs in detail de skte h with screenshot .
+
+=> playwright m test k base pr bhi locators nikal skte h like :  page.locator("text="add to cart");
+=> jese ako kisi 1 block se sare element nikalne h to like footer se sale link nikalne h to aap 
+    : phle us footer ko 1 const m store kr lo fir foooter.nth(i).locator("cssSelectorlocator");  is trh kro loop lga k .
+    jese selenium m WebElement.findElement("")  likhte h  same ese hi .
+
+=> Playwright m text k base m 2 type se locator nikal skte h 
+    1. page.locator("text=add to cart");
+    2. page.locator("tagName:hasText('add to cart'));  is method ko psudo code khte h.
+
+=> Element visible h ya ni is k liye .isVisible ka use krte h . ye true ya false return krega.
+=> Playwright kuchh kuchh methods k liye defalt wait ni krta hme lgana hota h alag  se script m [ default wait mtlb jo hmne globally diya h ]
+
+    1. allTextContent(); , 2. isVisible();
+
+=> Agr aap .fill("india") is ka use kr re h to ye direct value past krega input box m 
+    : agr apko value type kr k dalne h to aap .pressSequancly("india"); ise use kro ye dynamic dropdown k sath jadam kaam aata h .
+
+=> Agr ko kisi input box m value type kr kdalne h or every key press k bad wait krna h to aap 
+    : .pressSequancly("india", {delay:100});  ise use kre.  ya  .fill("india", {1000}); ise bhi use kr skte h .
+
+=> Jese java m string.contains("") ye method hota h ese hi javascript m .includes() ye method hota h .
+
+=> java m .length() ye hota h javascript m .count method hota h .
