@@ -254,3 +254,54 @@ EXAMPLE :
 => Jese java m string.contains("") ye method hota h ese hi javascript m .includes() ye method hota h .
 
 => java m .length() ye hota h javascript m .count method hota h .
+
+================ **********  Playwright ADVANCE LOCATOR ====================
+
+=> selenium m .getBy method hota h us ka use kr hm elements m action perform kr skte h .
+    1.  .getByLabel("labelName");
+    2.  .getByAttribute(" ");
+    3.  .getByAltText("");
+    4.  .getByPlaceholder("");
+    5.  .getByRole();  ,  .getByTitle("");   etc....
+
+Example :
+
+        <input type="checkbox" name="login">
+        <label class="fontspy"> click here </label>
+
+=> aab agr apko checkbox m click krna h to aap 
+    page.getByLabel("click here").click();   // ye code tb hi kaa krega jb label k text m click kr k chckbox auto check ho ra hoga.
+
+    ye code likh doge to ye checkbox m clck kr dega.
+    // click ki jgh aap check() ka use kr skte h 
+
+=>Agr apko dropdow se value select krni h
+    page.getByLabel("gender").selectOption("Femal");
+    ye code tb hi kaam krega jb apka code <Select tag k ander hoga. [ aap selectOption() ka use kr skte h ]
+
+
+********************************  PLAYWRIGHT TEST RUNNER **************************
+
+=> PLAYWRIGHT  m agr apko script test runner ki help se run krna h to 
+    : npx playwright test --ui
+
+    ye command likho fir apke pas 1 test runner ka ui open ho jayega us m apko sare test show honge.
+    apko jo test run krna h aap us k samne run button m click kro test run ho jayega
+    aap execution k bad detailed log with ss bhi dekh skte h vhi se jo file run kri us m click kr k.
+
+=> Agr apke ui m koi button h or us ka tag name <inut h to aap .getByRole(); method ka use kr akte h button ko find krne k liye.
+
+EXAMPLE:
+
+<input tyoe ="submit" class=".btn-btn-success" name="submit" value="submit>
+page.getByRole("button",{name:'submit'}).click(); // button is liye h kyu ki vo button h playwright auto identify kr leta h tag button ni h tb bhi.
+
+
+=> .getByText() is method ka use bhi kr skte h agr apko kisi text m click krna h to .getByText("clickMe").click();
+
+=> Agr apke pass bhut sare product card h or every card m 1 addto cart button h or apko kisi 1 p click krna h to 
+
+    page.locator(".product-card").filter({hasText: 'Nokia'}).getByRole("button").click();
+
+    : .product-card se sare card mile fir hmne filter method ka use kr k jis card m nokia text h use find kiya.
+    : or last m us m jo button h uc p click kra diya .  hasText m getByText vala method use hora h internally.
