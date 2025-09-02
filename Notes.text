@@ -305,3 +305,84 @@ page.getByRole("button",{name:'submit'}).click(); // button is liye h kyu ki vo 
 
     : .product-card se sare card mile fir hmne filter method ka use kr k jis card m nokia text h use find kiya.
     : or last m us m jo button h uc p click kra diya .  hasText m getByText vala method use hora h internally.
+
+
+=> getByLabel();sare case m kaam ni krta h . ye tab hi kaam krega jb ap jis element ko select kr re h vo label tag k ander ho ya.
+    : label tag or apke element k linking ho.
+    EXAMPLE:
+        <label> password
+            <input type="password">   // inputbox is inside of label.
+        </label>
+
+        <label for="passwordField"> </label>
+        <input type="password" id="passwordField">  // linking is label for and id of inputbox
+
+
+
+=> agr kisi bhi tag ka name button h ya us ki class m btn  h to aap direct getByRole("button")  ese likh skte h.
+=> String ko number m convert krne k liye Number("StringNumber"); ye use kro.
+=> agr kisi element ka type hidden h or apka locator use bhi count kr ra h selectorhub m to jb aap script run kroge vo locate ni hoga
+   : only visible element locate hota h 
+=> javascript  m array bnane k liye  const list = [one,two,three];
+
+======================  ALERTS ====================
+
+page.on('dialog', dialog => dialog.dismiss()); is se alert k cancel button m click hoga.
+    : page.on('dialog' // iska mtlb h ki jb bhi page m alert show hoga /   dialog => ye variable h ,  dialog.dismiss(); ye cancel m click krega)
+=> playwright m alert ko dialog bolte h .
+page.on  1 listioer h . jese hi alert show hoga ye 1 listioer ki trh kaam krega. 
+
+.dismiss ki jgh aap .accept ka use kroge to ok button m clickhoga alert k .
+
+=> .hover() ka use kr k hm mouse over kr skte h .  // element.hover();
+
+
+==================  IFRAME ======================
+
+.IframeLocator ka use krte h agr apko frame k ander switch krna h to.
+
+=> const framePage  = page.frameLocator("frameNameYaFrameId");
+ framePage.locator("li a[href='link']):visible.click();
+ :vosoble is liye likha kyu ki jo hmne locator likha h us se 2 element show hore the but 1 hidden tha to ye usi ko select krega jo visible h.
+
+QUESTION : WHAT IS DIFFERENCE BETWEEN .beforeAAll() and .beforeEach()  ?
+
+ANSWER:   Agr apke pass 3 test h ,  tes1, test2, tet3.
+        or apne . beforeEach() use kiya h to sabse phle beforeEach() method call hoga fir test1, fir again beforeEach(), fir test2.
+        fir again beforeEach() fir test3.
+
+    : agr apne beforeAAll() use kiyah to sabse phle beforeAAll() use hoga fir test1, test2,  test3.
+
+=> mtlb beforeAAll() only 1 bar run hota h or or beforeEach() before each test case.
+
+=====================  API USING PLAYWRIGHT =================
+
+=> Jese ui testing m browser.newContext()  lihkte h vse hi api k liye request.newContext() likhna hota h .
+
+    EXAMPLE: 
+    const apiContext = await request.newContext();
+        const response = apiContext.post("url",{data:bosy});
+        response.json likhne se apko response json form m milta h .
+
+=> agr apko response m status code check krna h ki success h ya ni to aap 
+    expect(response.ok()).toBeTruthy();  ese assertion lga skte h .
+
+=> agr ap variabe const ka use kr k declear kr re h to apko variabe ki koi default value deni hogi.
+=> agr varialbe ki koi default value ni h to aap let k use kro.
+
+=> afr aap javascript koi class bnate h ot aap use dusri class m import krna chahte h to calss k last m module.export = {className}; likhna h.
+=> fir import krne k liye const[className] = require(./folder/className); ese kr lo.
+
+=> agr app koi bhi async method call kr re h to apko  call krte time await likhna jaroori h 
+=> hmesa async k sath awat aata h . or await use kroge to async likh hi hoga.
+
+
+
+
+
+
+
+
+
+
+
